@@ -8,4 +8,10 @@ const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
  */
 const config = {};
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+module.exports = mergeConfig(getDefaultConfig(__dirname), {
+    ...config,
+    transformer: {
+        assetPlugins: ['expo-asset/tools/hashAssetFiles'],
+        sourceExts: ['js', 'json', 'ts', 'tsx', 'jsx', 'cjs', 'mjs', 'svg', 'map'],
+    },
+});
