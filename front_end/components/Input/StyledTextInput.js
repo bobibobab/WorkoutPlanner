@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { View } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -37,7 +37,28 @@ const LeftIcon = styled.View`
     padding-right: 10px;
 `
 
-const StyledTextInput = ({icon, label, ...props}) => {
+const RightIcon = styled.TouchableOpacity`
+    position: absolute;
+    top: 35px;
+    right: 15px;
+    z-index: 1;
+    
+`
+
+const StyledTextInput = ({ icon, label, isPassword  , ...props}) => {
+    const [inputBackgroundColor, setInputBackgroundColor] = useState(primary);
+    const [hidePassword, setHidePassword] = useState(true);
+
+    const customOnBlur = () => {
+        props?.onBlur;
+        setInputBackgroundColor(primary);
+    }
+
+
+    const customOnFocus = () => {
+        props?.onFocus;
+        setInputBackgroundColor(secondary);
+    }
 
     return (<View>
             <LeftIcon>
@@ -47,7 +68,18 @@ const StyledTextInput = ({icon, label, ...props}) => {
         <InputField
             {...props}
             placeholderTextColor = {lightGray}
+            style={{backgroundColor: inputBackgroundColor, ...props?.style}}
+            onBlur={customOnBlur}
+            onFocus={customOnFocus}
+            secureTextEntry={isPassword && hidePassword}
         />
+
+        {isPassword && <RightIcon 
+            onPress = {() => {
+                    setHidePassword(!hidePassword);
+                }}>
+            <MaterialCommunityIcons name={hidePassword ? 'eye-off' : 'eye'} size = {30} color = {tertiary}/>
+        </RightIcon>}
     </View>);
 };
 
